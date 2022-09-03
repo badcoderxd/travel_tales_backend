@@ -7,6 +7,8 @@ const SmsService = class SmsService {
             const authToken = process.env.SMS_SERVICE_ACCOUNT_TOKEN; 
             console.log(accountSid,authToken,"creds")
 
+          return false;
+          
             const client = await require('twilio')(accountSid, authToken, {
                 lazyLoading: true
             }); 
