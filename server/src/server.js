@@ -14,7 +14,7 @@ const { commonAllRoutes } = require('./Routes/MergedEndPoints/Common/CommonAllRo
 
 const { userAllRoutes } = require('./Routes/MergedEndPoints/User/UserAllRoutes');
 
-require("dotenv").config({path: path.resolve(__dirname+'/.env')})
+require("dotenv").config({path: path.resolve(__dirname+'.env')})
 
 fastify.register(require("@fastify/swagger"), swagger.options);
 
