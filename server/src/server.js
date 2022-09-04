@@ -6,9 +6,24 @@ const path = require('path');
 const cluster = require('cluster');
 const os = require('os');
 console.log(os.cpus().length)
+const toobusy = require('toobusy-js');
 
 fastify.register(require('@fastify/multipart'),{ attachFieldsToBody: false })
-fastify.register(require('@fastify/formbody'))
+fastify.register(require('@fastify/formbody'));
+
+
+fastify.addHook('onRequest', (request, reply, done) => {
+  console.log("pid", process.pid)
+  if(toobusy()){
+    console.log("res is busy")
+    reply.code(503).send({message:"I'm busy right now, sorry."});
+  }
+  else
+  {
+    done()
+  }
+})
+
 
 const { registerCors } = require('./Configs/Cors/CorsConfig');
 const { connectToMongo } = require('./Configs/database/connectMongo');
@@ -40,7 +55,7 @@ userAllRoutes(fastify)
   const startServer = async () => {
     try {
       if(cluster.isMaster){
-        for(let i=0; i < 1; i++){
+        for(let i=0; i < 2; i++){
           cluster.fork();
         }
       }
