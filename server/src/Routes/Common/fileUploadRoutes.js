@@ -19,7 +19,7 @@ const routes = [
   {
     method: "POST",
     url: "/api/upload-single-file",
-    preHandler:[verifyTheUserToken,upload.single('files'),console.log(storage,"storage")],
+    preHandler:[verifyTheUserToken,upload.single('files')],
     handler: FileUploadController.uploadSingleFile
   },
 ];
