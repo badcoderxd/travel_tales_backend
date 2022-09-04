@@ -12,13 +12,14 @@ const storage = multer.diskStorage({
     }, 
   })
 
+
 const upload = multer({storage: storage, limits:{fileSize:1000000 * 5}},);
 
 const routes = [
   {
     method: "POST",
     url: "/api/upload-single-file",
-    preHandler:[verifyTheUserToken,upload.single('files')],
+    preHandler:[verifyTheUserToken,upload.single('files'),console.log(storage,"storage")],
     handler: FileUploadController.uploadSingleFile
   },
 ];
