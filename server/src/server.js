@@ -3,6 +3,9 @@ const fastify = require('fastify')({
     logger: true
   });
 const path = require('path');
+const cluster = require('cluster');
+const os = require('os');
+console.log(os.cpus().length)
 
 fastify.register(require('@fastify/multipart'),{ attachFieldsToBody: false })
 fastify.register(require('@fastify/formbody'))
@@ -14,7 +17,7 @@ const { commonAllRoutes } = require('./Routes/MergedEndPoints/Common/CommonAllRo
 
 const { userAllRoutes } = require('./Routes/MergedEndPoints/User/UserAllRoutes');
 
-require("dotenv").config()
+require("dotenv").config();
 
 fastify.register(require("@fastify/swagger"), swagger.options);
 
@@ -36,8 +39,16 @@ userAllRoutes(fastify)
   // Run the server!
   const startServer = async () => {
     try {
-      await fastify.listen(2022,"0.0.0.0")
-      fastify.log.info(`server listening on ${fastify.server.address().port}`)
+      if(cluster.isMaster){
+        for(let i=0; i < 3; i++){
+          cluster.fork();
+        }
+      }
+      else{
+        await fastify.listen(2022,"0.0.0.0")
+        fastify.log.info(`server listening on ${fastify.server.address().port} and process id ${process.pid}`)
+      }
+      
     } catch (err) {
       fastify.log.error(err)
       process.exit(1)
