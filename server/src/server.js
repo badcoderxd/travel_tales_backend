@@ -40,7 +40,7 @@ userAllRoutes(fastify)
   const startServer = async () => {
     try {
       if(cluster.isMaster){
-        for(let i=0; i < 3; i++){
+        for(let i=0; i < 2; i++){
           cluster.fork();
         }
       }
