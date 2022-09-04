@@ -19,9 +19,10 @@ const routes = [
   {
     method: "POST",
     url: "/api/upload-single-file",
-    preHandler:[verifyTheUserToken,upload.single('files')],
+    preHandler:[verifyTheUserToken],
     handler: FileUploadController.uploadSingleFile
   },
 ];
 
 module.exports = routes;
+//upload.single('files')
